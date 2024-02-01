@@ -5,8 +5,8 @@ import { BalanceService } from './balanceService';
 export class BalanceController {
   constructor(private readonly balanceService: BalanceService) {}
 
-  @Get('/getBalance')
+  @Get('/balance')
   async getBalance() {
-    return await this.balanceService.highestBalance();
+    return await this.balanceService.highestChangedBalance();
   }
 }

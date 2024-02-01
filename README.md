@@ -10,7 +10,13 @@
 
 2. Make sure postgres up and running and database with the name from `POSTGRES_DATABASE` exists
 
-3. Run in the terminal
+3. Install dependencies 
+
+```bash
+npm install
+```
+
+4. Run in the terminal
 
 ```bash
 npm run start

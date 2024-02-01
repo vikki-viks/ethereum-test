@@ -21,12 +21,6 @@ export class CronService {
       throw new Error('No counter found in DB');
     }
 
-    const dataTransaction = await fetch(
-      `https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=0x${counter.count.toString(16)}&boolean=true`,
-    );
-
-    await setTimeout(200);
-
     const dataLastBlockNumber = await fetch(
       'https://api.etherscan.io/api?module=proxy&action=eth_blockNumber',
     );
@@ -38,17 +32,23 @@ export class CronService {
       return;
     }
 
+    await setTimeout(5000);
+
+    const dataTransaction = await fetch(
+      `https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=0x${counter.count.toString(16)}&boolean=true`,
+    );
+
+    const resultTransaction = await dataTransaction.json();
+    const result = resultTransaction.result.transactions.map((el: any) => ({
+      from: el.from,
+      to: el.to,
+      value: el.value,
+      numberBlock: counter.count,
+    }));
+
     await this.dataSource.transaction(async (em) => {
       const transactionRepo = em.getRepository(Transaction);
       const countRepo = em.getRepository(Count);
-
-      const resultTransaction = await dataTransaction.json();
-      const result = resultTransaction.result.transactions.map((el) => ({
-        from: el.from,
-        to: el.to,
-        value: el.value,
-        numberBlock: counter.count,
-      }));
 
       await transactionRepo.save(result);
       await countRepo.save({ id: 1, count: counter.count + 1 });

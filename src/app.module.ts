@@ -17,7 +17,7 @@ import { CreateDatabase1706636734237 } from './migrations/1706636734237-CreateDa
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
-      port: parseInt(process.env.POSTGRES_PORT),
+      port: parseInt(process.env.POSTGRES_PORT!),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
