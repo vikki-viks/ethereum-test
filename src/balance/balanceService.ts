@@ -32,6 +32,8 @@ export class BalanceService {
 
     const balanceMap = await this.createBalanceMap(transactionsWithBase10Value);
 
+    console.log([...balanceMap.entries()]);
+
     const [address] = [...balanceMap.entries()].reduce(
       ([accAddress, accBalance]: [string, number], [address, balance]) => {
         if (Math.abs(balance) > Math.abs(accBalance)) {
